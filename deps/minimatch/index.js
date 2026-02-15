@@ -4,9 +4,9 @@ var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
 
-// node_modules/@isaacs/balanced-match/dist/commonjs/index.js
+// node_modules/balanced-match/dist/commonjs/index.js
 var require_commonjs = __commonJS({
-  "node_modules/@isaacs/balanced-match/dist/commonjs/index.js"(exports2) {
+  "node_modules/balanced-match/dist/commonjs/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.range = exports2.balanced = void 0;
@@ -66,9 +66,9 @@ var require_commonjs = __commonJS({
   }
 });
 
-// node_modules/@isaacs/brace-expansion/dist/commonjs/index.js
+// node_modules/brace-expansion/dist/commonjs/index.js
 var require_commonjs2 = __commonJS({
-  "node_modules/@isaacs/brace-expansion/dist/commonjs/index.js"(exports2) {
+  "node_modules/brace-expansion/dist/commonjs/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.EXPANSION_MAX = void 0;
@@ -1015,7 +1015,7 @@ var braceExpand = (pattern, options = {}) => {
   if (options.nobrace || !/\{(?:(?!\{).)*\}/.test(pattern)) {
     return [pattern];
   }
-  return (0, brace_expansion_1.expand)(pattern);
+  return (0, brace_expansion_1.expand)(pattern, { max: options.braceExpandMax });
 };
 exports.braceExpand = braceExpand;
 exports.minimatch.braceExpand = exports.braceExpand;
@@ -1059,7 +1059,8 @@ var Minimatch = class {
     this.pattern = pattern;
     this.platform = options.platform || defaultPlatform;
     this.isWindows = this.platform === "win32";
-    this.windowsPathsNoEscape = !!options.windowsPathsNoEscape || options.allowWindowsEscape === false;
+    const awe = "allowWindowsEscape";
+    this.windowsPathsNoEscape = !!options.windowsPathsNoEscape || options[awe] === false;
     if (this.windowsPathsNoEscape) {
       this.pattern = this.pattern.replace(/\\/g, "/");
     }
@@ -1116,7 +1117,10 @@ var Minimatch = class {
         const isUNC = s[0] === "" && s[1] === "" && (s[2] === "?" || !globMagic.test(s[2])) && !globMagic.test(s[3]);
         const isDrive = /^[a-z]:/i.test(s[0]);
         if (isUNC) {
-          return [...s.slice(0, 4), ...s.slice(4).map((ss) => this.parse(ss))];
+          return [
+            ...s.slice(0, 4),
+            ...s.slice(4).map((ss) => this.parse(ss))
+          ];
         } else if (isDrive) {
           return [s[0], ...s.slice(1).map((ss) => this.parse(ss))];
         }
@@ -1397,7 +1401,10 @@ var Minimatch = class {
       const fdi = fileUNC ? 3 : fileDrive ? 0 : void 0;
       const pdi = patternUNC ? 3 : patternDrive ? 0 : void 0;
       if (typeof fdi === "number" && typeof pdi === "number") {
-        const [fd, pd] = [file[fdi], pattern[pdi]];
+        const [fd, pd] = [
+          file[fdi],
+          pattern[pdi]
+        ];
         if (fd.toLowerCase() === pd.toLowerCase()) {
           pattern[pdi] = fd;
           if (pdi > fdi) {
